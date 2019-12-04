@@ -83,7 +83,7 @@ def main(args):
     momentum = float(hyperparams.get("momentum", 0.9))
     use_bn = hyperparams.get("batch_norm", 'true') == 'true'
     epochs = int(hyperparams.get("epochs", 10))
-    
+   
     # SageMaker options
     model_dir = args.model_dir
     training_dir = args.training
@@ -128,8 +128,6 @@ def main(args):
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('--data_dir', type=str, default='./data')
-    parser.add_argument('--log_dir', type=str, default='.')
 
     # SageMaker parameters
     parser.add_argument('--model_dir',        type=str)

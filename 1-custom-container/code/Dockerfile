@@ -1,4 +1,4 @@
-FROM 763104351884.dkr.ecr.us-west-2.amazonaws.com/pytorch-training:1.2.0-gpu-py36-cu100-ubuntu16.04
+FROM pytorch/pytorch:latest
 
 RUN pip install pandas torchvision
 

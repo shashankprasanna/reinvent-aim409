@@ -11,21 +11,39 @@ import os
 from urllib.request import urlretrieve
 import gzip
 import argparse
+import argparse
+import os.path
+import json
+
+def get_hyperparameters():   
+    with open("/opt/ml/input/config/hyperparameters.json", 'r') as stream:
+        hyper_param_set = json.load(stream)
+    return hyper_param_set 
 
 def main(args):
     
-    # Hyper-parameters
+    # Load hyperparameters
+    hyperparams = get_hyperparameters()
+    
     hyperparams={
-    'n_estimators'       : args.n_estimators,
-    'max_depth'          : args.max_depth,
-    'n_bins'             : args.n_bins,
-    'split_criterion'    : args.split_criterion,
-    'split_algo'         : args.split_algo,
-    'bootstrap'          : args.bootstrap,
-    'bootstrap_features' : args.bootstrap_features,
-    'max_leaves'         : args.max_leaves,
-    'max_features'       : args.max_features
+    'n_estimators' : int(hyperparams.get("n_estimators", 20)),
+    'max_depth' : int(hyperparams.get("max_depth", 10)),
+    'n_bins' : int(hyperparams.get("n_bins", 8)),
+    'split_criterion' : int(hyperparams.get("split_criterion", 0)),
+    'split_algo' : int(hyperparams.get("split_algo", 0)),
+    'bootstrap' : hyperparams.get("bootstrap", 'true') == 'true',
+    'bootstrap_features' : hyperparams.get("bootstrap_features", 'false') == 'true',
+    'max_leaves' : int(hyperparams.get("max_leaves", -1)),
+    'max_features' : float(hyperparams.get("max_features", 0.2))
     }
+    
+
+#     'split_criterion'    : 0,      # GINI:0, ENTROPY:1
+#     'split_algo'         : 0,      # HIST:0 GLOBAL_QUANTILE:1
+#     'bootstrap'          : True,   # sample with replacement
+#     'bootstrap_features' : False,  # sample without replacement
+#     'max_leaves'         : -1,     # unlimited leaves
+
 
     # SageMaker options
     model_dir       = args.model_dir
